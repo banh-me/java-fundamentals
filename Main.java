@@ -3,9 +3,22 @@ import java.util.Scanner;
 public class Main {
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);
-    int num1 = Integer.parseInt(sc.nextLine());
-    int num2 = Integer.parseInt(sc.nextLine());
-    System.out.print((long) num1 + num2);
+    int total = Integer.parseInt(sc.nextLine());
+
+    int secondsInADay = 86400;
+    int secondsInAnHour = 3600;
+    int secondsInAMinute = 60;
+
+    int days = total / secondsInADay;
+    total %= secondsInADay;
+
+    int hours = total / secondsInAnHour;
+    total %= secondsInAnHour;
+
+    int minutes = total / secondsInAMinute;
+    total %= secondsInAMinute;
+
+    IO.print("%d days %d hours %d minutes %d seconds".formatted(days, hours, minutes, total));
 
     sc.close();
   }
