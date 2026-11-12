@@ -2,3 +2,13 @@
 *.class
 __pycache__/
 node_modules/
+
+# Editor / language-server local state (regenerated on open)
+.metals/
+.bsp/
+.bloop/
+.scala-build/
+.vscode/
+.idea/
+*.iml
+.DS_Store
