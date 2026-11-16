@@ -3,12 +3,15 @@ import java.util.Scanner;
 public class Main {
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);
-    int year = Integer.parseInt(sc.nextLine());
+    String line = sc.nextLine();
 
-    if (year % 400 == 0 || (year % 4 == 0 && year % 100 != 0)) {
-      IO.print("leap");
-    } else {
-      IO.print("common");
+    int n = Integer.parseInt(line);
+    long total = 0;
+    for (int i = 1; i < n; i++) {
+      if (i % 3 == 0 || i % 5 == 0) {
+        total += i;
+      }
     }
+    IO.print(total);
   }
 }
