@@ -3,6 +3,9 @@
 __pycache__/
 node_modules/
 
+# Mill build output (build.mill)
+out/
+
 # Editor / language-server local state (regenerated on open)
 .metals/
 .bsp/

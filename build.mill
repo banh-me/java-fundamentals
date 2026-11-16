@@ -1,0 +1,30 @@
+//| mill-version: 1.3.1
+package build
+import mill.*
+import mill.scalalib.*
+
+// Metals drives LSP and DAP through BSP build targets, and its debug adapter
+// finds runnable mains via `buildTarget/scalaMainClasses` - a request Mill only
+// answers for Scala modules. A ScalaModule also compiles plain .java sources,
+// so this is what lets Metals own Main.java end to end (LSP + debugger).
+//
+// Nothing here is used by run_tests.sh, which still calls javac/java directly.
+object app extends ScalaModule {
+  def scalaVersion = "3.10.1"
+
+  // The course keeps everything in a single Main.java at the repo root
+  // (see .shipthatcode.json), not in app/src/
+  override def sources = Task.Sources(moduleDir / os.up / "Main.java")
+
+  // JDWP so Neovim/Metals can attach: `./mill app.run`, then <F5> -> Attach (127.0.0.1:5005).
+  // suspend=n keeps plain `./mill app.run` working; the debugger joins whenever it likes.
+  // Swap in suspend=y if you want the JVM to wait for the debugger before main() runs.
+  override def forkArgs = Seq(
+    "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=127.0.0.1:5005"
+  )
+
+  // Full debug info. javac/zinc default to -g:source,lines, which omits the
+  // LocalVariableTable - and without it the debugger cannot resolve locals
+  // (Metals: "Cannot evaluate because of ... total is not a local variable").
+  override def javacOptions = Seq("-g")
+}
